@@ -11,10 +11,25 @@ export class CharactersPageComponent implements OnInit {
   dragonballService = inject(DragonballService);
 
   characters = signal<Character[]>([]);
+  page = signal<number>(1);
+  isLoading = signal<boolean>(false);
 
   ngOnInit(): void {
-    this.dragonballService.loadCharacters().subscribe((characters) => {
-      this.characters.set(characters);
-    });
+    this.loadCharacters();
+  }
+
+  loadCharacters(): void {
+    this.isLoading.set(true);
+    this.dragonballService
+      .loadCharacters(this.page())
+      .subscribe((characters) => {
+        this.characters.set(characters);
+        this.isLoading.set(false);
+      });
+  }
+
+  nextPage(page: number): void {
+    this.page.set(page);
+    this.loadCharacters();
   }
 }

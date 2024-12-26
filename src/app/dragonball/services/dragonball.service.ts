@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { delay, map, Observable } from 'rxjs';
 
 import type {
   Character,
@@ -16,6 +16,9 @@ export class DragonballService {
   loadCharacters(page: number = 1): Observable<Character[]> {
     return this.http
       .get<CharacterResponse>(`${this.api}/characters?page=${page}`)
-      .pipe(map((response) => response.items));
+      .pipe(
+        map((response) => response.items),
+        delay(2500)
+      );
   }
 }
