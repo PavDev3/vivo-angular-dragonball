@@ -3,3 +3,13 @@
 @if( character() ) {
 <app-character-info [character]="character()!" />
 }
+
+<!--  -->
+@if (hasError()) {
+<section class="flex flex-col w-full h-[500px] items-center justify-center">
+  <h2 class="text-3xl text-error">Error</h2>
+  <p class="text-xl font-thin">Hubo un error al cargar el personaje</p>
+
+  <a [routerLink]="['/dragonball']" class="link-primary mt-10">Regresar</a>
+</section>
+}

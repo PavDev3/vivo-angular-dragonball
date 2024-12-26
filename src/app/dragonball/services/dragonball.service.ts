@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { catchError, delay, map, Observable, throwError } from 'rxjs';
 
 import type {
   Character,
@@ -24,7 +24,12 @@ export class DragonballService {
   }
 
   loadCharacter(id: string): Observable<FullCharacter> {
-    return this.http.get<FullCharacter>(`${this.api}/characters/${id}`);
-    // .pipe(delay(2500));
+    return this.http.get<FullCharacter>(`${this.api}/characters/${id}`).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return throwError(() => `Character by id ${id} not found`);
+      })
+      // delay(2500)
+    );
   }
 }

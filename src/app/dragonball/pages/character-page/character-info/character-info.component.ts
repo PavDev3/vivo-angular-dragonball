@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   Character,
   FullCharacter,
@@ -6,7 +7,7 @@ import {
 
 @Component({
   selector: 'app-character-info',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './character-info.component.html',
 })
 export class CharacterInfoComponent {
