@@ -1,10 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { DragonballService } from '../../services/dragonball.service';
 import { Character } from '../../interfaces/character.interface';
+import { RouterLink } from '@angular/router';
+import { FullscreenLoadingComponent } from '../../../shared/components/fullscreen-loading/fullscreen-loading.component';
 
 @Component({
   selector: 'app-characters-page',
-  imports: [],
+  imports: [RouterLink, FullscreenLoadingComponent],
   templateUrl: './characters-page.component.html',
 })
 export class CharactersPageComponent implements OnInit {

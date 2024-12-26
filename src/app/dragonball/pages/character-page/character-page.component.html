@@ -1,1 +1,5 @@
-<p>character-page works!</p>,
+<app-fullscreen-loading [isLoading]="isLoading()" />
+
+@if( character() ) {
+<app-character-info [character]="character()!" />
+}

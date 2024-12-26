@@ -1,0 +1,48 @@
+<section class="grid grid-cols-2 sm:grid-cols-2 gap-5">
+  <img
+    class="h-96 w-96 object-contain"
+    [src]="character().image"
+    [alt]="character().name"
+  />
+
+  <div>
+    <h2 class="text-3xl">{{ character().name }}</h2>
+    <p class="">{{ character().description }}</p>
+  </div>
+</section>
+
+<div class="stats shadow w-full mt-2">
+  <div class="stat place-items-center">
+    <div class="stat-title">Ki</div>
+    <div class="stat-value">{{ character().ki }}</div>
+    <div class="stat-desc">Máximo {{ character().maxKi }}</div>
+  </div>
+
+  <div class="stat place-items-center">
+    <div class="stat-title">Transformaciones</div>
+    <div class="stat-value text-secondary">
+      {{ character().transformations.length }}
+    </div>
+    <div class="stat-desc text-secondary">
+      @if (character().transformations.at(-1)?.name ) {
+      <!--  -->
+      Máxima
+      {{ character().transformations.at(-1)?.name }}
+      } @else () {
+      <p>Base</p>
+      }
+    </div>
+  </div>
+
+  <div class="stat place-items-center">
+    <div class="stat-title">Planeta</div>
+    <div class="stat-value">{{ character().originPlanet.name }}</div>
+    <div class="stat-desc">
+      @if (character().originPlanet.isDestroyed) {
+      <p class="text-red-500">Destruido</p>
+      } @else {
+      <p class="text-green-500">Intacto</p>
+      }
+    </div>
+  </div>
+</div>

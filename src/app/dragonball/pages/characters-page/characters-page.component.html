@@ -1,10 +1,4 @@
-@if (isLoading()) {
-<section
-  class="flex h-screen w-screen items-center justify-center fixed top-0 left-0 bg-base-100 bg-opacity-80 z-50 transition-all"
->
-  <span class="loading loading-spinner loading-lg text-accent"></span>
-</section>
-}
+<app-fullscreen-loading [isLoading]="isLoading()" />
 
 <section
   class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 transition-all"
@@ -30,7 +24,12 @@
         }}
       </p>
       <div class="card-actions justify-end">
-        <a class="link link-secondary" href="">Más</a>
+        <a
+          [routerLink]="['/dragonball/characters', character.id]"
+          class="link link-secondary"
+          href=""
+          >Más</a
+        >
       </div>
     </div>
   </div>
