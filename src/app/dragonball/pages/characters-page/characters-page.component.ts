@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { DragonballService } from '../../services/dragonball.service';
-import { Character } from '../../interfaces/character.interface';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { DragonballService } from '../../services/dragonball.service';
+
 import { FullscreenLoadingComponent } from '../../../shared/components/fullscreen-loading/fullscreen-loading.component';
 
 @Component({
@@ -9,29 +10,36 @@ import { FullscreenLoadingComponent } from '../../../shared/components/fullscree
   imports: [RouterLink, FullscreenLoadingComponent],
   templateUrl: './characters-page.component.html',
 })
-export class CharactersPageComponent implements OnInit {
+export class CharactersPageComponent {
   dragonballService = inject(DragonballService);
-
-  characters = signal<Character[]>([]);
   page = signal<number>(1);
-  isLoading = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.loadCharacters();
-  }
+  characterResource = rxResource({
+    request: () => ({ page: this.page() }),
+    loader: ({ request }) =>
+      this.dragonballService.loadCharacters(request.page),
+  });
 
-  loadCharacters(): void {
-    this.isLoading.set(true);
-    this.dragonballService
-      .loadCharacters(this.page())
-      .subscribe((characters) => {
-        this.characters.set(characters);
-        this.isLoading.set(false);
-      });
-  }
+  // characters = signal<Character[]>([]);
+  // page = signal<number>(1);
+  // isLoading = signal<boolean>(false);
 
-  nextPage(page: number): void {
-    this.page.set(page);
-    this.loadCharacters();
-  }
+  // ngOnInit(): void {
+  //   this.loadCharacters();
+  // }
+
+  // loadCharacters(): void {
+  //   this.isLoading.set(true);
+  //   this.dragonballService
+  //     .loadCharacters(this.page())
+  //     .subscribe((characters) => {
+  //       this.characters.set(characters);
+  //       this.isLoading.set(false);
+  //     });
+  // }
+
+  // nextPage(page: number): void {
+  //   this.page.set(page);
+  //   this.loadCharacters();
+  // }
 }

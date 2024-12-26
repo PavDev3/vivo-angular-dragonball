@@ -7,7 +7,7 @@ import {
 
 @Component({
   selector: 'app-character-info',
-  imports: [RouterLink],
+
   templateUrl: './character-info.component.html',
 })
 export class CharacterInfoComponent {

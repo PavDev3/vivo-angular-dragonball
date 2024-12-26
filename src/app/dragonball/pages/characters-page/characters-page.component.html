@@ -1,10 +1,10 @@
-<app-fullscreen-loading [isLoading]="isLoading()" />
+<app-fullscreen-loading [isLoading]="characterResource.isLoading()" />
 
 <section
   class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 transition-all"
-  [class.blur]="isLoading()"
+  [class.blur]="characterResource.isLoading()"
 >
-  @for (character of characters(); track character.id) {
+  @for (character of characterResource.value(); track character.id) {
 
   <div class="card card-side bg-base-100 shadow-xl">
     <figure class="w-44 h-4w-44">
@@ -42,7 +42,7 @@
   <button
     class="btn btn-secondary"
     [disabled]="page() === 1"
-    (click)="nextPage(page() - 1)"
+    (click)="page.set(page() - 1)"
   >
     Anterior
   </button>
@@ -51,8 +51,10 @@
 
   <button
     class="btn btn-secondary"
-    [disabled]="characters().length < 10"
-    (click)="nextPage(page() + 1)"
+    [disabled]="
+      characterResource.value()?.length && characterResource.value()!.length < 9
+    "
+    (click)="page.set(page() + 1)"
   >
     Siguiente
   </button>
