@@ -1,3 +1,28 @@
+<section class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  @for (character of characters(); track character.id) {
 
+  <div class="card card-side bg-base-100 shadow-xl">
+    <figure>
+      <img
+        class="object-contain w-full h-48"
+        [src]="character.image"
+        [alt]="character.name"
+      />
+    </figure>
+    <div class="card-body">
+      <h2 class="card-title">{{ character.name }}</h2>
+      <p class="text-sm text-base-content">
+        {{
+          character.description.length > 100
+            ? character.description.substring(0, 100) + "..."
+            : character.description
+        }}
+      </p>
+      <div class="card-actions justify-end">
+        <a class="link link-secondary" href="">Más</a>
+      </div>
+    </div>
+  </div>
 
-
+  }
+</section>

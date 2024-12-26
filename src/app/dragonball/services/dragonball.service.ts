@@ -15,7 +15,7 @@ export class DragonballService {
 
   loadCharacters(page: number = 1): Observable<Character[]> {
     return this.http
-      .get<CharacterResponse>(`${this.api}/character?page=${page}`)
+      .get<CharacterResponse>(`${this.api}/characters?page=${page}`)
       .pipe(map((response) => response.items));
   }
 }
