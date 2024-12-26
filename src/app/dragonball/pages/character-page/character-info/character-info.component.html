@@ -47,7 +47,16 @@
   </div>
 </div>
 
-<section class="flex justify-end mt-5">
+<section class="flex justify-end mt-5 gap-2">
+  @if ( character().id >1) {
+  <a
+    [routerLink]="['/dragonball/characters/', character().id - 1]"
+    class="btn btn-outline btn-accent"
+    >Anterior</a
+  >
+
+  }
+
   <a
     [routerLink]="['/dragonball/characters/', character().id + 1]"
     class="btn btn-outline btn-accent"
