@@ -1,11 +1,11 @@
-<app-fullscreen-loading [isLoading]="isLoading()" />
+<app-fullscreen-loading [isLoading]="characterResource.isLoading()" />
 
-@if( character() ) {
-<app-character-info [character]="character()!" />
+@if( characterResource.hasValue() ) {
+<app-character-info [character]="characterResource.value()!" />
 }
 
 <!--  -->
-@if (hasError()) {
+@if (characterResource.error()) {
 <section class="flex flex-col w-full h-[500px] items-center justify-center">
   <h2 class="text-3xl text-error">Error</h2>
   <p class="text-xl font-thin">Hubo un error al cargar el personaje</p>

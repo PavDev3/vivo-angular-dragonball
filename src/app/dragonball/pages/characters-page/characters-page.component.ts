@@ -1,7 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { rxResource } from '@angular/core/rxjs-interop';
+
 import { DragonballService } from '../../services/dragonball.service';
 import { Character } from '../../interfaces/character.interface';
-import { RouterLink } from '@angular/router';
 import { FullscreenLoadingComponent } from '../../../shared/components/fullscreen-loading/fullscreen-loading.component';
 
 @Component({
@@ -9,29 +11,56 @@ import { FullscreenLoadingComponent } from '../../../shared/components/fullscree
   imports: [RouterLink, FullscreenLoadingComponent],
   templateUrl: './characters-page.component.html',
 })
-export class CharactersPageComponent implements OnInit {
+export class CharactersPageComponent {
   dragonballService = inject(DragonballService);
+  activatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
 
-  characters = signal<Character[]>([]);
-  page = signal<number>(1);
-  isLoading = signal<boolean>(false);
+  page = signal<number>(
+    Number(this.activatedRoute.snapshot.queryParamMap.get('page') ?? 1)
+  );
 
-  ngOnInit(): void {
-    this.loadCharacters();
-  }
+  pageEffect = effect(() => {
+    const currentPage = this.page();
+    this.router.navigate([], {
+      queryParams: { page: currentPage },
+    });
+  });
 
-  loadCharacters(): void {
-    this.isLoading.set(true);
-    this.dragonballService
-      .loadCharacters(this.page())
-      .subscribe((characters) => {
-        this.characters.set(characters);
-        this.isLoading.set(false);
-      });
-  }
+  characterResource = rxResource({
+    request: () => ({ page: this.page() }),
+    loader: ({ request }) => {
+      // this.router.navigate([], {
+      //   queryParams: { page: request.page },
+      // });
+      return this.dragonballService.loadCharacters(request.page);
+    },
+  });
 
-  nextPage(page: number): void {
-    this.page.set(page);
-    this.loadCharacters();
-  }
+  // characters = signal<Character[]>([]);
+  // isLoading = signal<boolean>(false);
+  // hasError = signal<string>('');
+
+  // ngOnInit(): void {
+  //   this.loadCharacters();
+  // }
+
+  // loadCharacters(): void {
+  //   this.isLoading.set(true);
+  //   this.dragonballService.loadCharacters(this.page()).subscribe({
+  //     next: (characters) => {
+  //       this.characters.set(characters);
+  //       this.isLoading.set(false);
+  //     },
+  //     error: (error) => {
+  //       this.hasError.set(error);
+  //       this.isLoading.set(false);
+  //     },
+  //   });
+  // }
+
+  // nextPage(page: number): void {
+  //   this.page.set(page);
+  //   this.loadCharacters();
+  // }
 }
