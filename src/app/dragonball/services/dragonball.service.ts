@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, delay, map, Observable, of, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 
+import { environment } from '@envs/environment.development';
 import type {
   Character,
   CharacterResponse,
   FullCharacter,
 } from '../interfaces/character.interface';
-import { environment } from '@envs/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class DragonballService {
@@ -26,7 +26,6 @@ export class DragonballService {
       .get<CharacterResponse>(`${this.api}/characters?page=${page}`)
       .pipe(
         map((response) => response.items),
-        delay(2500),
         tap((characters) => this.characterPageCache.set(page, characters)),
         catchError((error) => {
           console.error('Error:', error);
@@ -41,7 +40,6 @@ export class DragonballService {
         console.error('Error:', error);
         return throwError(() => `Character by id ${id} not found`);
       })
-      // delay(2500)
     );
   }
 }
